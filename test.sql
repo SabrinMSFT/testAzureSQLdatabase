@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS SampleTable (
+    Id INT PRIMARY KEY,
+    Name NVARCHAR(100)
+);
+
