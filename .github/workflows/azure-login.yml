@@ -1,4 +1,4 @@
-name: Azure Login with UMI
+name: Test Azure Login with UMI
 
 on: [push]
 
@@ -7,12 +7,9 @@ permissions:
   contents: read
 
 jobs:
-  login-and-deploy:
+  test-login:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Azure Login with UMI
         uses: azure/login@v2
         with:
@@ -21,9 +18,6 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           auth-type: IDENTITY
 
-      - name: Deploy SQL script
-        uses: azure/sql-action@v2.3
-        with:
-          connection-string: "Server=tcp:sabrinserver.database.windows.net;Authentication=Active Directory Managed Identity;Database=test"
-          path: './test.sql'
-          action: 'sql'
+      - name: Show Azure Account Info
+        run: az account show
+
