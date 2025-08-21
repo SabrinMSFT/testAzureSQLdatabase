@@ -1,23 +1,18 @@
-name: Test Azure Login with UMI
+name: Azure SQL UMI Login
 
-on: [push]
-
-permissions:
-  id-token: write
-  contents: read
+on: [pushname: Azure SQL U]
 
 jobs:
-  test-login:
-    runs-on: ubuntu-latest
+  login-to-azure:
+    runs-on: [self-hosted]  # Your Azure VM runner
     steps:
-      - name: Azure Login with UMI
+      - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          auth-type: IDENTITY
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          auth-type: IDENTITY
-
-      - name: Show Azure Account Info
-        run: az account show
-
+          enable-AzPSSession: true
+      - name: Run SQL Script
+        run: |
+          sqlcmd -S sabrinserver.database.windows.net -d test -G -Q "SELECT TOP 1 * FROM your_table"
